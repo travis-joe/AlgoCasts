@@ -66,17 +66,17 @@ class LinkedList {
   removeLast() {
     let head = this.head
     if (!head) {
-      return null
+      return 
     }
     function helper(head) {
-      if (head.next.head === null) {
-        head.next = null
+      if (head.next === null) {
+        head = null
       } else {
-        helper(head.next.head)
+        helper(head.next)
       }
     }
 
-    return helper(head)
+    helper(head)
   }
 
   insertLast(data) {
