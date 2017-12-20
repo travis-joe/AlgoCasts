@@ -66,37 +66,102 @@ class LinkedList {
   removeLast() {
     let head = this.head
     if (!head) {
-      return 
+      return
     }
+    if (head.next === null) {
+      this.head = null
+    } else {
+      helper(head)
+    }
+
     function helper(head) {
-      if (head.next === null) {
-        head = null
+      if (head.next.next === null) {
+        head.next = null
       } else {
         helper(head.next)
       }
     }
 
-    helper(head)
   }
 
   insertLast(data) {
     const node = new Node(data)
-    let head = this.head
-    if (!head) {
+    const last = this.getLast()
+
+    if (last) {
+      last.next = node
+    } else {
       this.head = node
     }
-    function helper(head) {
-      if (head.next.head === null) {
-        node.next = head.next
-        head.next = node
-      } else {
-        helper(head.next.head)
+  }
+
+  getAt(index) {
+    let counter = 0;
+    let node = this.head;
+    while (node) {
+      if (counter === index) {
+        return node;
       }
+
+      counter++;
+      node = node.next;
+    }
+    return null;
+  }
+
+  removeAt(index) {
+    if (!this.head) {
+      return
     }
 
-    helper(head)
+    if (index === 0) {
+      this.head = this.head.next
+      return
+    }
+
+    const previous = this.getAt(index - 1)
+    if (!previous || !previous.next) {
+      return
+    }
+    previous.next = previous.next.next
+  }
+
+  insertAt(data, index) {
+    if (!this.head) {
+      this.head = new Node(data)
+      return
+    }
+
+    if (index === 0) {
+      this.head = new Node(data, this.head)
+      return
+    }
+
+    const previous = this.getAt(index - 1) || this.getLast()
+    previous.next = new Node(data, previous.next)
+  }
+
+  forEach(fn) {
+    let node = this.head
+    let counter = 0
+  
+    while(node) {
+      fn(node, counter)
+      node = node.next
+      counter++
+    }
+    
+  }
+
+  *[Symbol.iterator]() {
+    let node =this.head
+    while(node) {
+      yield node
+      node= node.next
+    }
   }
 }
+
 
 module.exports = {
   Node,
